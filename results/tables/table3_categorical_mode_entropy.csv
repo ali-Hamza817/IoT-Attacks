@@ -1,0 +1,8 @@
+Feature,TCP/IP Layer,Mode,Entropy,Max Entropy
+IPV4_SRC_ADDR,Internet,192.168.1.31,3.215,7.443
+IPV4_DST_ADDR,Internet,192.168.1.190,3.598,10.529
+PROTOCOL,Internet,6,0.474,2.322
+L4_SRC_PORT,Transport,443,13.095,15.246
+L4_DST_PORT,Transport,80,3.681,13.972
+TCP_FLAGS,Transport,27,2.568,4.585
+L7_PROTO,Application,7.0,1.825,6.6

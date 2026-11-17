@@ -1,0 +1,13 @@
+Feature,Unique Values,Functional Role,Classification,Zero Count,Zero %
+IPV4_SRC_ADDR,174,Identifier,Categorical,0,0.0
+IPV4_DST_ADDR,1478,Identifier,Categorical,0,0.0
+L4_SRC_PORT,38857,Identifier,Categorical,6323,0.46
+L4_DST_PORT,16071,Identifier,Categorical,6323,0.46
+PROTOCOL,5,Predefined category,Categorical,0,0.0
+L7_PROTO,97,Predefined category,Categorical,14342,1.04
+IN_BYTES,5049,Quantitative data,Numerical,0,0.0
+OUT_BYTES,5140,Quantitative data,Numerical,147823,10.72
+IN_PKTS,921,Quantitative data,Numerical,0,0.0
+OUT_PKTS,812,Quantitative data,Numerical,147823,10.72
+TCP_FLAGS,24,Predefined category,Categorical,127790,9.27
+FLOW_DURATION_MILLISECONDS,28408,Quantitative data,Numerical,372255,26.99

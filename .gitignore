@@ -1,0 +1,24 @@
+# Datasets: downloaded by run_pipeline.py; non-commercial licences, not redistributed
+data/
+
+# Paper PDF: available open access at https://doi.org/10.1007/s10207-026-01235-z
+*.pdf
+
+# Python
+__pycache__/
+*.py[cod]
+.ipynb_checkpoints/
+.venv/
+venv/
+
+# Large or temporary experiment artefacts (Task 2)
+results/leaf/raw/predictions/
+results/leaf/raw/splits.npz
+results/leaf/raw/*.before_repair.csv
+results/leaf/run_log.txt
+
+# Editors / OS
+.vscode/
+.idea/
+Thumbs.db
+.DS_Store

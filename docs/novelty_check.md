@@ -100,3 +100,70 @@ Each entry says what was **read**, not inferred. "Not stated" means the source d
 - Flood et al. 2024: https://ieeexplore.ieee.org/document/10629000 and https://detlearsom.github.io/pubs/BadSmells-EuroSP24-finaldraft.pdf
 - Dataset selection for preserving model rankings: https://arxiv.org/pdf/2606.27997
 - Martinez-Fuentes et al. 2026: https://link.springer.com/article/10.1007/s10207-026-01235-z; dataset: https://riubu.ubu.es/handle/10259/10953
+
+---
+
+## 4. Second, wider search (2026-11-17, after E6/E6b)
+
+New prior work found, and what was read:
+
+### 4.1 Valencia Vélez (2026) — closest competitor
+*Auditing the NetFlow versions of IoT and enterprise intrusion detection benchmarks: data quality, shortcuts and cross-dataset evaluation.* Submitted to *Computer Networks*, not yet published. Code: https://github.com/luiggiv2/netflow-benchmark-audit; Zenodo doi:10.5281/zenodo.23291192 (v1.0.0, 11 Oct 2026). Read: the README, the Zenodo record, `T5_findings.csv` and `duplicates_conflicts_report.txt`.
+
+- **Datasets:** NF-ToN-IoT, NF-BoT-IoT and NF-CSE-CIC-IDS2018, **v2 and v3 only**. NF-ToN-IoT V1 is not covered.
+- **Findings:**
+  - NF-ToN-IoT-v3 has 226,146 vectors with conflicting labels, mostly Benign/attack pairs (Benign/scanning 154,245 vectors).
+  - NF-ToN-IoT-v2 has 0 conflicting vectors.
+  - Within-file duplication is 35–99%.
+  - Grouped splits (no vector in two partitions), single-feature and shallow-tree shortcut probes, and cross-dataset evaluation.
+- **Not covered:**
+  - V1;
+  - cross-*attack* replication with equal multiplicity;
+  - classes with no sole-label record;
+  - accuracy ceilings;
+  - candidate-label scoring;
+  - downsampled subsets;
+  - model-ranking fidelity;
+  - Martinez-Fuentes et al.
+- **Consequence:** conflicting labels in NF-ToN-IoT (v3) and grouped/disjoint splits on NF datasets are **already covered**. We must cite this work. Our V1 findings are a different version with a different pattern: attack/attack, not benign/attack.
+
+### 4.2 Sarhan, Layeghy, Moustafa, Portmann (2020) — the dataset paper
+*NetFlow Datasets for ML-based NIDS*, arXiv:2011.09144. Read: PDF pp. 8–14.
+
+- Table 11 (p. 13), NF-ToN-IoT multiclass detection rate (DR) with Extra Trees:
+  - injection 41.47%;
+  - password 27.36%;
+  - scanning 31.30%;
+  - XSS 24.49%;
+  - weighted accuracy 56.34%.
+- The authors attribute this to missing payload features: "We suspect that specific features present in the original dataset contain payload information…"
+- **Consequence (new angle):** our replication finding gives a different, measured explanation. These classes have no records carrying their label alone, which caps accuracy at 72.82%, and label-tolerant accuracy reaches about 99%. No published work was found that makes this connection.
+
+### 4.3 Xie, Li, Zhang, Sun, Xu (SciSec 2022 / arXiv:2310.10660)
+*Analysis and Detection against Network Attacks in the Overlapping Phenomenon of Behavior Attribute.* Read: search summaries of the abstract.
+
+- They argue that one behaviour can belong to several attack types, and relabel UNSW-NB15 as multi-label (1.689 labels per sample on average).
+- **Consequence:** "identical behaviour, several attack labels" has already been described for UNSW-NB15, and treated as **multi-label** (all labels true). We must cite this. Our view differs: each record has *one* true label among its candidates (partial-label), and the contribution is the evaluation metrics and their use in fidelity measurement.
+
+### 4.4 Other new items
+- **Roy & Minu (arXiv:2609.28725, Sept 2026, under review).** On the CyberFlowIoT-GICAP dataset, a random flow split inflates attack recall by up to 14 points compared with a PCAP-disjoint split. No NF-ToN-IoT, no subsets, no ranking fidelity. *Supports the known idea that random splits inflate scores.*
+- **Gusev & Zaytsev (arXiv:2606.27997, KDD 2026).** Choosing a subset of *datasets* that preserves model rankings, measured with Spearman and Kendall's τ, on time-series, recommender and NLP benchmarks. *Closest methodological analogue; a different problem* (dataset selection, not row downsampling; not security).
+- **Zitoune (GitHub, 2026, no results yet).** A cross-dataset test on NF-v3 with capped class sampling. No transfer or ranking study.
+- **Not found:**
+  - any paper that uses or evaluates the Downsampled NF-ToN-IoT V1 dataset (doi:10.71486/wyx0-x933) or the Martinez-Fuentes framework with ML models;
+  - any NIDS study that measures whether a downsampled subset preserves internal-vs-external scores or model rankings;
+  - any set-membership ("consistent") metric for conflicting-label NIDS records.
+
+### 4.5 Revised novelty position
+
+| Claim | Status after the second search |
+|---|---|
+| Conflicting labels exist in NF-ToN-IoT | Known: Raskovalov 2022 (one sentence, V1); Valencia Vélez 2026 (v3, counted) |
+| V1: 287,559 attack/attack multi-label vectors, equal multiplicity, 4 classes with no sole-label record, 72.82% ceiling | **New for V1** |
+| Explains Sarhan et al.'s low NF-ToN-IoT multiclass results (attributed there to missing payload features) | **New** |
+| Grouped/disjoint split; identifier shortcut | Known; confirmatory |
+| Candidate-label (partial-label) consolidation and consistency metrics for NIDS evaluation | **New as an evaluation method**; related multi-label view in Xie et al. 2022 |
+| Model-level fidelity of a downsampled NIDS subset (internal vs unseen gap, Kendall τ, 20 seeds) | **New** (closest analogue is outside security: Gusev & Zaytsev 2026) |
+| ML evaluation of the published Martinez-Fuentes subset | **New** |
+
+"New" means "not found in this search". A literature search cannot prove that something has never been done anywhere.

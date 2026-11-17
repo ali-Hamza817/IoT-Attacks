@@ -1,0 +1,13 @@
+features,sampling,protocol,mean,min,max
+ALL,floor,disjoint,0.0,0.0,0.0
+ALL,floor,random,0.047805,0.0442,0.0523
+ALL,proportional,disjoint,0.0,0.0,0.0
+ALL,proportional,random,0.04802480248024803,0.043504350435043505,0.0536053605360536
+ALL,published,disjoint,0.0,0.0,0.0
+ALL,published,random,0.0495,0.0463,0.0526
+NOID,floor,disjoint,0.0,0.0,0.0
+NOID,floor,random,0.47349500000000005,0.4667,0.4801
+NOID,proportional,disjoint,0.0,0.0,0.0
+NOID,proportional,random,0.4703770377037704,0.45954595459545955,0.47754775477547756
+NOID,published,disjoint,0.0,0.0,0.0
+NOID,published,random,0.46845499999999995,0.4584,0.4741

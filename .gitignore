@@ -15,7 +15,7 @@ venv/
 results/leaf/raw/predictions/
 results/leaf/raw/splits.npz
 results/leaf/raw/*.before_repair.csv
-results/leaf/run_log.txt
+results/leaf/run_log*.txt
 
 # Editors / OS
 .vscode/

@@ -7,7 +7,7 @@
 ![Python](https://img.shields.io/badge/python-3.13-blue)
 ![pandas](https://img.shields.io/badge/pandas-3.0-150458)
 ![Task 1](https://img.shields.io/badge/Task%201%20(reproduction)-complete-brightgreen)
-![Task 2](https://img.shields.io/badge/Task%202%20(improvement)-in%20progress-orange)
+![Task 2](https://img.shields.io/badge/Task%202%20(improvement)-evaluated%2C%20refinement%20ongoing-yellow)
 ![Reproduced](https://img.shields.io/badge/paper%20values%20reproduced-261%20%2F%20266-brightgreen)
 
 </div>
@@ -24,7 +24,7 @@
 6. [Differences from the paper](#6-differences-from-the-paper)
 7. [Implementation details the paper does not state](#7-implementation-details-the-paper-does-not-state)
 8. [Observations made during reproduction](#8-observations-made-during-reproduction)
-9. [Task 2 – Weaknesses and improvement (in progress)](#9-task-2--weaknesses-and-improvement-in-progress)
+9. [Task 2 – Weaknesses, improved framework (LEAF) and evaluation](#9-task-2--weaknesses-improved-framework-leaf-and-evaluation)
 10. [Repository structure](#10-repository-structure)
 11. [How to run](#11-how-to-run)
 12. [Data sources, licences and citation](#12-data-sources-licences-and-citation)
@@ -38,7 +38,7 @@ This project has two tasks.
 | Task | Goal | Status |
 |---|---|---|
 | **Task 1 – Reproduction** | Reproduce every reported result of a published paper from the original data, with code written from scratch. The authors released no code. | ✅ **Complete** |
-| **Task 2 – Improvement** | Find the paper's weaknesses, propose a novel improvement, implement it and evaluate it. | 🔶 In progress |
+| **Task 2 – Improvement** | Find the paper's weaknesses, propose a novel improvement, implement it and evaluate it. | ✅ Implemented and evaluated (E1–E6b); 🔶 floor refinement and second dataset pending |
 
 **Task 1 headline results**
 
@@ -267,19 +267,67 @@ These are facts from the reproduced numbers. They motivate Task 2. Every number 
 
 ---
 
-## 9. Task 2 – Weaknesses and improvement (in progress)
+## 9. Task 2 – Weaknesses, improved framework (LEAF) and evaluation
 
-**Research question.** The paper shows that the subset *looks* statistically similar to the full dataset. Task 2 asks whether **machine-learning results** obtained on NF-ToN-IoT, and on its downsampled subset, are actually **trustworthy**.
+**Research question.** The paper shows that the subset *looks* statistically similar to the full dataset. Task 2 asks whether **machine-learning results** obtained on NF-ToN-IoT, and on its downsampled subset, are actually **trustworthy**, and how the framework should change so that they are.
 
-Planned work:
+Full design, hypotheses (fixed before the main run) and every result, including a failed hypothesis: [docs/task2_design.md](docs/task2_design.md). Experiment details: [LEAF_README.md](LEAF_README.md). Prior work and novelty check: [docs/novelty_check.md](docs/novelty_check.md).
 
-1. **Data-integrity audit.** Duplicates, and identical records that carry different labels.
-2. **Shortcut audit.** How much IP addresses and ports alone can predict.
-3. **Leakage-aware evaluation.** Compare a random split with a split in which identical records never appear in both train and test.
-4. **Model-level fidelity of downsampling.** Do models trained on a subset give the same scores and model rankings as models trained on the full data?
-5. **Improved framework.** Add integrity, identifier-handling and model-fidelity steps to the five-step framework, and compare the resulting subset with the published one.
+### 9.1 Weaknesses found in the original framework
 
-The code and results for Task 2 will be added to this repository when they are complete and verified.
+| # | Weakness | Evidence (all recomputed by the code in this repository) |
+|---|---|---|
+| W1 | Representativeness is judged only by statistics, never by models | No model is trained in the paper |
+| W2 | No label-consistency check | 287,559 distinct records carry 2–5 attack labels; each label occurs equally often in 100% of them (E1b) |
+| W3 | Four attack classes cannot be separated | dos, password, scanning and xss have **0** records that carry their label alone (295,427 rows, 21.4%) |
+| W4 | Identifiers kept as features | IPs and ports alone give 0.9998 binary F1 (E2) |
+| W5 | Rare classes almost vanish | 5 ransomware and 46 mitm rows in the subset; 1 ransomware row in a 20% test split |
+| W6 | No leakage-safe split | In a random 80/20 split of the subset, 4.95% of test records (20 seeds: 4.63–5.26%) have an exact copy in training. Without identifiers this rises to 46.8% (`E6_split_leakage.csv`) |
+| W7 | Some statistical claims overstated | See Section 8 |
+
+### 9.2 Improved framework: LEAF preprocessing
+
+The paper's Steps 1–5 are kept. LEAF adds:
+
+- a duplicate and label-consistency audit;
+- **label consolidation** (one record per distinct flow, with its set of candidate labels);
+- identifier removal by default;
+- floor-proportional sampling;
+- a **leakage-safe split** (identical flows never on both sides);
+- a **model-fidelity check** against unseen data.
+
+For candidate-label data, models are scored by *balanced consistency*: a prediction counts as correct if it is one of the record's candidate labels. On ordinary single-label data this equals balanced accuracy, which is unit-tested against scikit-learn.
+
+### 9.3 Main result (E6/E6b: 875 model fits)
+
+A researcher takes a 50k subset, splits it 80/20 and compares 7 models (LR, DT, RF, ET, XGBoost, LightGBM, MLP). We check whether the internal scores and the model ranking hold on all the *unseen* records of NF-ToN-IoT V1.
+
+<p align="center"><img src="results/leaf/figures/E6b_seed_distributions.png" width="900" alt="E6b per-seed ranking agreement and score gap"></p>
+
+| 20 seeds | Ranking agreement τ [95% CI] | Mean \|internal − external\| | Seed-to-seed sd |
+|---|---|---|---|
+| Paper's practice (published subset, random split, all features) | 0.705 [0.614, 0.791] | 0.0392 | 0.0468 |
+| Published subset, leakage-safe split | 0.810 [0.724, 0.886] | 0.0335 | 0.0425 |
+| Full LEAF, pre-registered metric | 0.800 [0.752, 0.848] | 0.0451 | 0.0217 |
+| Full LEAF, scored on classes present on both sides (post hoc) | 0.881 [0.852, 0.910] | 0.0188 | 0.0156 |
+
+What the results show, including where LEAF failed:
+
+- **The paper's practice gives an unreliable model ranking.** τ is 0.705, and the best model on the subset is the best on unseen data in only 14 of 20 seeds (hypothesis H1: supported).
+- **LEAF failed its pre-registered gap test.** Its floor sampling takes *every* ransomware record (and, without identifiers, every dos record) into the subset, so those classes cannot be checked on unseen data. The gap is larger, 0.0451 vs 0.0392, p = 0.034 (H3: rejected as pre-registered).
+- **Scored on the same classes, LEAF halves the gap and ranks models more consistently.** This was tested on 15 seeds run *after* the comparison was defined: gap p = 3.4 × 10⁻⁶, τ p = 0.022. LEAF's internal scores are also about twice as stable across seeds.
+- **The leakage-safe split alone helps in direction, but not significantly** (τ p = 0.11, gap p = 0.11, n = 20).
+- **Removing identifiers does not improve agreement within this dataset.** Its purpose is to avoid the IP/port shortcut when moving to another network.
+
+All 16 configurations of E6 (5 seeds each) are reported in `results/leaf/tables/E6_fidelity_summary.csv` and in the figure below.
+
+<p align="center"><img src="results/leaf/figures/E6_fidelity_overview.png" width="900" alt="E6 overview of all 16 configurations"></p>
+
+### 9.4 Next steps
+
+1. Fix the floor step so that every class keeps records outside the subset (proposed in [docs/task2_design.md](docs/task2_design.md) §4.3), and test it on fresh seeds.
+2. Repeat on a second dataset (e.g. NF-ToN-IoT-v2 or NF-UNSW-NB15).
+3. Publish the LEAF subset as row indices plus code; the data itself is not redistributed.
 
 ---
 
@@ -291,6 +339,18 @@ IoT-Attacks/
 ├── requirements.txt              Python dependencies
 ├── run_pipeline.py               Task 1 entry point: download → Steps 1–5 → figures → comparison report
 ├── observations.py               recomputes the observations in README Section 8
+├── run_leaf.py                   Task 2 entry point: LEAF experiments E1–E6b
+├── analyze_leaf.py               Task 2 analysis of E1–E5 (tables, figures)
+├── LEAF_README.md                Task 2 experiment documentation and findings F1–F8
+├── docs/
+│   ├── task2_design.md           weaknesses, improved framework, E6 design, hypotheses, results
+│   └── novelty_check.md          prior work and what is new
+├── leaf/                         Task 2 package
+│   ├── audit.py, forensics.py    integrity audit (E1) and replication forensics (E1b)
+│   ├── partial.py                label consolidation and candidate-label metrics
+│   ├── fidelity.py               E6/E6b: evaluation fidelity of reduced datasets
+│   ├── analyze_e6.py             E6/E6b analysis (gaps, Kendall τ, tests, figures)
+│   └── ...                       config, data, models, sampling, experiments (E2–E5)
 ├── repro/                        Task 1 package (written from scratch from the paper's text)
 │   ├── config.py                 paths, official URLs, feature groups, seed, target size
 │   ├── download.py               UQ RDM + UBU download, safe zip extraction, SHA-1 check
@@ -302,7 +362,8 @@ IoT-Attacks/
 └── results/
     ├── reproduction_report.md    generated report
     ├── tables/                   all reproduced tables (CSV)
-    └── figures/                  reproduced Figures 2–4 (PNG)
+    ├── figures/                  reproduced Figures 2–4 (PNG)
+    └── leaf/                     Task 2: raw per-fit results, tables, figures
 ```
 
 `data/` is created locally by the pipeline and is not tracked (see [Section 12](#12-data-sources-licences-and-citation)).
@@ -321,6 +382,12 @@ pip install -r requirements.txt
 python run_pipeline.py                # download the data (first run only), verify SHA-1, run Steps 1–5
 python run_pipeline.py --no-download  # rerun with the data already on disk (about 15 s)
 python observations.py                # recompute the Section 8 observations
+
+# Task 2 (needs the data downloaded by run_pipeline.py)
+python run_leaf.py all                # E1–E5 (several hours; resumable)
+python run_leaf.py e1b e6 e6b         # forensics and fidelity experiments (about 2 h)
+python analyze_leaf.py                # E1–E5 tables and figures
+python -m leaf.analyze_e6             # E6/E6b tables, tests and figures
 ```
 
 The pipeline:

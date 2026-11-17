@@ -1,0 +1,11 @@
+Statistic,Value
+Distinct 12-feature vectors,846951.0
+Vectors carrying >1 attack label,287559.0
+Rows in those vectors,668984.0
+Share with equal label multiplicity (k_min = k_max),1.0
+Share with rows = n_labels x k,1.0
+Share with source port >= 1024,1.0
+Share with source port >= 49152,0.4427091483834622
+Distinct source ports among them,21798.0
+Share with FLOW_DURATION_MILLISECONDS > 0,0.8794299604602881
+Share with IN_BYTES > 100,0.9238208506776001

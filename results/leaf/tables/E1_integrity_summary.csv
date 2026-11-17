@@ -1,0 +1,35 @@
+Statistic,Count,Percent
+Records,1379274.0,100.0
+Exact duplicate rows (all 14 columns),168345.0,12.205334110553814
+"[raw, ALL] unique feature vectors",846951.0,61.40556553665189
+"[raw, ALL] rows sharing their vector with another row",878053.0,63.66051995470081
+"[raw, ALL] rows in vectors with >1 attack class",668984.0,48.50261804398546
+"[raw, ALL] rows in vectors with both Benign and Attack",0.0,0.0
+"[raw, ALL] multiclass accuracy ceiling (%)",,72.82157134840503
+"[raw, ALL] binary accuracy ceiling (%)",,100.0
+"[raw, ALL] multi-class vectors",287559.0,
+"[raw, ALL] ... of which all classes have equal multiplicity (%)",,100.0
+"[raw, NOID] unique feature vectors",380984.0,27.622067841487624
+"[raw, NOID] rows sharing their vector with another row",1185378.0,85.94216957616834
+"[raw, NOID] rows in vectors with >1 attack class",934059.0,67.72106194998238
+"[raw, NOID] rows in vectors with both Benign and Attack",108713.0,7.881900188069955
+"[raw, NOID] multiclass accuracy ceiling (%)",,72.44818650971453
+"[raw, NOID] binary accuracy ceiling (%)",,99.82795296656067
+"[raw, NOID] multi-class vectors",157109.0,
+"[raw, NOID] ... of which all classes have equal multiplicity (%)",,78.99483797872816
+"[dedup, ALL] unique feature vectors",846951.0,69.94225094947764
+"[dedup, ALL] rows sharing their vector with another row",651537.0,53.80472348089772
+"[dedup, ALL] rows in vectors with >1 attack class",651537.0,53.80472348089772
+"[dedup, ALL] rows in vectors with both Benign and Attack",0.0,0.0
+"[dedup, ALL] multiclass accuracy ceiling (%)",,69.94225094947764
+"[dedup, ALL] binary accuracy ceiling (%)",,100.0
+"[dedup, ALL] multi-class vectors",287559.0,
+"[dedup, ALL] ... of which all classes have equal multiplicity (%)",,100.0
+"[dedup, NOID] unique feature vectors",380984.0,31.462125359950914
+"[dedup, NOID] rows sharing their vector with another row",1016421.0,83.93729112111446
+"[dedup, NOID] rows in vectors with >1 attack class",810792.0,66.95619644091437
+"[dedup, NOID] rows in vectors with both Benign and Attack",79449.0,6.560995731376488
+"[dedup, NOID] multiclass accuracy ceiling (%)",,69.51943507835719
+"[dedup, NOID] binary accuracy ceiling (%)",,99.80750316492544
+"[dedup, NOID] multi-class vectors",157109.0,
+"[dedup, NOID] ... of which all classes have equal multiplicity (%)",,78.99483797872816

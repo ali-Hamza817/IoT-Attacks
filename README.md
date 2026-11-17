@@ -306,7 +306,7 @@ A researcher takes a 50k subset, splits it 80/20 and compares 7 models (LR, DT, 
 
 | 20 seeds | Ranking agreement τ [95% CI] | Mean \|internal − external\| | Seed-to-seed sd |
 |---|---|---|---|
-| Paper's practice (published subset, random split, all features) | 0.705 [0.614, 0.791] | 0.0392 | 0.0468 |
+| Paper's practice (published subset, random split, all features) | 0.705 [0.614, 0.790] | 0.0392 | 0.0468 |
 | Published subset, leakage-safe split | 0.810 [0.724, 0.886] | 0.0335 | 0.0425 |
 | Full LEAF, pre-registered metric | 0.800 [0.752, 0.848] | 0.0451 | 0.0217 |
 | Full LEAF, scored on classes present on both sides (post hoc) | 0.881 [0.852, 0.910] | 0.0188 | 0.0156 |

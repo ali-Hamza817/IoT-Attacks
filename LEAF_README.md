@@ -97,7 +97,7 @@ All numbers below come from `results/leaf/tables/`. Macro-F1 95% CIs use a boots
 
 ### F6 - Internal evaluation of the published 49,997-row subset (E5)
 - The 10,000-row internal test set contains 1 ransomware row and 9 mitm rows.
-- Internal macro-F1 varies 4–10× more across seeds than external macro-F1, and is usually 0.05–0.06 lower. For example, LGBM scores 0.526 ± 0.023 internally and 0.585 ± 0.019 externally.
+- Internal macro-F1 varies more across seeds than external macro-F1 on unseen vectors. With all features its standard deviation is 1.2–11× the external one, and at least 2.5× for five of the seven models. For tree ensembles it is usually 0.05–0.06 lower. For example, LGBM scores 0.526 ± 0.023 internally and 0.590 ± 0.019 externally on unseen vectors (`E5_internal_vs_external.csv`). *(Corrected 2026-11-17: an earlier version said "4–10×" and mixed two external columns.)*
 - Accuracy transfers within 0.5 pp.
 - Model order changes between internal and external evaluation: LR beats ET internally (0.428 vs 0.369), but loses externally (0.397 vs 0.431).
 
@@ -115,7 +115,7 @@ Full results, including the failed hypothesis, are in [docs/task2_design.md](doc
 
 | 20 seeds × 7 models | τ internal vs external ranking | Mean \|internal − external\| | Seed sd |
 |---|---|---|---|
-| Paper practice (published subset, random split, all features) | 0.705 [0.614, 0.791] | 0.0392 | 0.0468 |
+| Paper practice (published subset, random split, all features) | 0.705 [0.614, 0.790] | 0.0392 | 0.0468 |
 | Published subset, disjoint split | 0.810 [0.724, 0.886] | 0.0335 | 0.0425 |
 | Full LEAF, pre-registered metric | 0.800 [0.752, 0.848] | **0.0451** (worse, p = 0.034) | 0.0217 |
 | Full LEAF, matched classes (post hoc; confirmed on 15 fresh seeds) | 0.881 [0.852, 0.910] | 0.0188 | 0.0156 |

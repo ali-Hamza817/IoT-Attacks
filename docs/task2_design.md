@@ -79,14 +79,14 @@ Run: 560 fits, 4,803 s, no errors, no missing or duplicate (config, seed, model)
 | Config | Internal | External | Mean \|gap\| | Signed gap | τ mean ± sd | Same winner | Seed sd | Min class support |
 |---|---|---|---|---|---|---|---|---|
 | **raw\|published\|random\|ALL** (paper) | 0.4776 | 0.4674 | 0.0372 | +0.0102 | 0.676 ± 0.239 | 3/5 | 0.0465 | 1 |
-| raw\|published\|disjoint\|ALL | 0.4794 | 0.4691 | 0.0355 | +0.0103 | 0.867 ± 0.198 | 4/5 | 0.0444 | 1 |
+| raw\|published\|disjoint\|ALL | 0.4794 | 0.4691 | 0.0355 | +0.0103 | 0.867 ± 0.197 | 4/5 | 0.0444 | 1 |
 | raw\|proportional\|random\|ALL | 0.4659 | 0.4821 | 0.0348 | −0.0162 | 0.790 ± 0.227 | 3/5 | 0.0453 | 1 |
 | raw\|proportional\|disjoint\|ALL | 0.4785 | 0.4816 | 0.0373 | −0.0032 | 0.886 ± 0.080 | 5/5 | 0.0462 | 1 |
 | raw\|floor\|random\|ALL | 0.5837 | 0.5509 | 0.0328 | +0.0328 | 0.810 ± 0.117 | 5/5 | 0.0155 | 28 |
 | raw\|floor\|disjoint\|ALL | 0.5871 | 0.5494 | 0.0377 | +0.0377 | 0.905 ± 0.117 | 5/5 | 0.0137 | 28 |
 | consolidated\|proportional\|disjoint\|ALL | 0.8926 | 0.8760 | 0.0228 | +0.0166 | 0.771 ± 0.186 | 4/5 | 0.0259 | 1 |
 | consolidated\|floor\|disjoint\|ALL | 0.9542 | 0.9473 | 0.0103 | +0.0069 | 0.771 ± 0.144 | 5/5 | 0.0066 | 29 |
-| raw\|published\|random\|NOID | 0.4192 | 0.3725 | 0.0519 | +0.0467 | 0.505 ± 0.207 | 2/5 | 0.0369 | 1 |
+| raw\|published\|random\|NOID | 0.4192 | 0.3725 | 0.0519 | +0.0467 | 0.505 ± 0.206 | 2/5 | 0.0369 | 1 |
 | raw\|published\|disjoint\|NOID | 0.3597 | 0.3579 | 0.0175 | +0.0018 | 0.790 ± 0.124 | 4/5 | 0.0309 | 1 |
 | raw\|proportional\|random\|NOID | 0.4055 | 0.3747 | 0.0407 | +0.0308 | 0.829 ± 0.080 | 3/5 | 0.0398 | 1 |
 | raw\|proportional\|disjoint\|NOID | 0.3747 | 0.3728 | 0.0296 | +0.0019 | 0.714 ± 0.178 | 3/5 | 0.0435 | 1 |
@@ -152,7 +152,7 @@ Tests:
 
 | 20 seeds | τ mean [95% CI] | Same winner | Mean \|gap\| [95% CI] | Signed gap | Seed sd | Regret* | Top-2 external margin |
 |---|---|---|---|---|---|---|---|
-| Paper practice `raw\|published\|random\|ALL` | 0.705 [0.614, 0.791] | 14/20 | 0.0392 [0.0362, 0.0423] | +0.006 | 0.0468 | 0.0052 | 0.031 |
+| Paper practice `raw\|published\|random\|ALL` | 0.705 [0.614, 0.790] | 14/20 | 0.0392 [0.0362, 0.0423] | +0.006 | 0.0468 | 0.0052 | 0.031 |
 | Paper file + disjoint split `raw\|published\|disjoint\|ALL` | 0.810 [0.724, 0.886] | 16/20 | 0.0335 [0.0288, 0.0386] | +0.009 | 0.0425 | 0.0050 | 0.026 |
 | Full LEAF, pre-registered metric | 0.800 [0.752, 0.848] | 8/20 | 0.0451 [0.0411, 0.0491] | −0.036 | 0.0217 | 0.0021 | 0.002 |
 | Full LEAF, matched classes (post hoc) | 0.881 [0.852, 0.910] | 9/20 | 0.0188 [0.0169, 0.0205] | +0.012 | 0.0156 | 0.0016 | 0.002 |
@@ -176,7 +176,7 @@ Tests:
 
 | | Verdict |
 |---|---|
-| H1 | **Supported.** The paper's practice gives τ = 0.705 [0.614, 0.791] and the right winner in only 14 of 20 seeds. |
+| H1 | **Supported.** The paper's practice gives τ = 0.705 [0.614, 0.790] and the right winner in only 14 of 20 seeds. |
 | H2 | **Partly supported**, on a lenient criterion; see §4.2. Individual effects are mostly not significant with this many seeds. |
 | H3 | **Rejected as pre-registered** on the gap measure. It is supported on ranking agreement (in direction only, not significant) and on stability. On matched classes (post hoc, confirmed on fresh seeds) full LEAF is significantly better on gap and τ. |
 
